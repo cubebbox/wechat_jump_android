@@ -6,24 +6,25 @@
     android:layout_height="match_parent"
     tools:context="com.cubebox.tiaoyitiao.MainActivity">
 
-    <com.cubebox.tiaoyitiao.TouchrReleative
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/get_permission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="得到root权限" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="开启" />
-    </com.cubebox.tiaoyitiao.TouchrReleative>
+            android:layout_weight="1"
+            android:text="开启辅助" />
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="关闭辅助" />
+    </LinearLayout>
 
 
 </LinearLayout>

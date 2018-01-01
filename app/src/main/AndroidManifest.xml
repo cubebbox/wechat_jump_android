@@ -21,6 +21,71 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 自定义运行后台辅助服务 -->
+        <service
+            android:name=".service.AssistentService"
+            android:enabled="true"
+            android:exported="false"
+            android:persistent="true"
+            android:priority="1000" />
+        <!-- 自定义运行后台辅助服务 -->
+        <service
+            android:name=".service.AssistentService$GrayInnerService"
+            android:enabled="true"
+            android:exported="false"
+            android:persistent="true"
+            android:priority="1000" />
+
+        <!--对讲服务器守护进程-->
+        <service
+            android:name=".service.KeepLiveService"
+            android:enabled="true"
+            android:exported="false"
+            android:persistent="true"
+            android:priority="1000"
+            android:process=":remote">
+            <intent-filter android:priority="1000">
+                <action android:name="net.chofn.crm.service.KeepLiveService" />
+            </intent-filter>
+        </service>
+
+        <!--对讲服务器守护进程-->
+        <service
+            android:name=".service.KeepLiveService$GrayInnerService"
+            android:enabled="true"
+            android:exported="false"
+            android:persistent="true"
+            android:priority="1000"
+            android:process=":remote">
+            <intent-filter android:priority="1000">
+                <action android:name="net.chofn.crm.service.KeepLiveService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.TaskService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:persistent="true"
+            android:priority="1000"
+            android:process=":remote" />
+
+
+        <activity
+            android:name=".OpenActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTransDialog"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".CloseActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/ActivityTransDialog"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

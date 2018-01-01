@@ -3,4 +3,49 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- app基础色值-->
+    <color name="white">#ffffff</color>
+    <color name="white_transparent_little">#80ffffff</color>
+    <color name="blue">#497ebe</color>
+    <color name="orange">#ff7800</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_half">#50000000</color>
+    <color name="transparent_much">#10000000</color>
+    <color name="transparent_little">#90000000</color>
+    <color name="gray_half">#999999</color>
+
+    <!-- app主题色 (38,140,250)-->
+    <color name="app_main_color">#50abf1</color>
+
+    <!-- 分割线 -->
+    <color name="app_divideline_minor">#e7e7e7</color>
+    <color name="app_divideline_main">#c9dbdc</color>
+    <!--===================以上为基础色值必须添加===============================-->
+
+    <!--===================以下为APP自定义颜色==================================-->
+    <!-- 主要标题色 -->
+    <color name="app_title_main">#484848</color>   <!-- TextTitleMain-->
+    <color name="app_txt_main_body">#666666</color>  <!-- TextOneLine-->
+    <color name="app_txt_explain">#999999</color>   <!-- TextParagraph-->
+    <color name="app_txt_auxiliary">#cccccc</color>   <!-- TextAuxiliary-->
+
+    <!-- 背景色-->
+    <color name="app_bg_main">#eeeeee</color>
+    <color name="app_bg_cell">#ffffff</color>
+
+    <!--app 按钮-->
+    <color name="app_btn_orange">#f8b551</color>
+    <color name="app_btn_red">#f2474d</color>
+    <color name="app_btn_blue">#0079fe</color>
+
+    <!-- app 辅助色-->
+    <color name="app_blue_auxiliary">#00b4f7</color>
+    <color name="app_orange_auxiliary">#ff993e</color>
+    <color name="app_green1_auxiliary">#00d1a4</color>
+    <color name="app_green2_auxiliary">#89d043</color>
+    <color name="app_red_auxiliary">#ff8484</color>
+    <color name="app_black_auxiliary">#707e92</color>
+    <color name="app_gray_auxiliary">#cbcbcb</color>
 </resources>
