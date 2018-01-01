@@ -163,6 +163,7 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
         final Button reduce = (Button) toucherLayout.findViewById(R.id.reduce);
         final TextView tvRate = (TextView) toucherLayout.findViewById(R.id.rate);
 
+        tvRate.setText("敏感度：" + rate);
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
