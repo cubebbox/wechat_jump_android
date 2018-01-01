@@ -2,16 +2,31 @@ package com.cubebox.tiaoyitiao;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.cubebox.tiaoyitiao.utils.DensityUtil;
 
 /**
  * Created by luozi on 2017/12/30.
  */
 
-public class AssistentView extends LinearLayout {
+public class AssistentView extends View {
+    private Paint paint;
+    /**
+     * 实心画笔
+     */
+    private Paint paint2;
     private RectF rootRect = new RectF();
+    private RectF rectA = new RectF();
+    private RectF rectB = new RectF();
+    private int DP10 = 10;
+
+    private int BTN_SIZE = 90;
 
     public AssistentView(Context context) {
         this(context, null);
@@ -27,27 +42,138 @@ public class AssistentView extends LinearLayout {
     }
 
     private void init(Context context) {
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.RED);
 
+        paint2 = new Paint();
+        paint2.setAntiAlias(true);
+        paint2.setStyle(Paint.Style.FILL);
+        paint2.setColor(Color.RED);
+
+        DP10 = DensityUtil.dip2px(context, DP10);
+        BTN_SIZE = DensityUtil.dip2px(context, BTN_SIZE);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        rootRect.left = 0;
-        rootRect.top = 0;
-        rootRect.right = getMeasuredWidth();
-        rootRect.bottom = getMeasuredHeight();
-
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        rootRect.left = 0;
+        rootRect.top = 0;
+        rootRect.right = getMeasuredWidth();
+        rootRect.bottom = getMeasuredHeight();
+
+        rectA.left = DP10 * 3;
+        rectA.top = rootRect.centerY();
+        rectA.right = DP10 * 3 + BTN_SIZE;
+        rectA.bottom = rootRect.centerY() + BTN_SIZE;
+        lastAX = rectA.centerX();
+        lastAY = rectA.centerY();
+
+        rectB.left = rootRect.right - DP10 * 3 - BTN_SIZE;
+        rectB.top = rootRect.centerY();
+        rectB.right = rootRect.right - DP10 * 3;
+        rectB.bottom = rootRect.centerY() + BTN_SIZE;
+        lastBX = rectB.centerX();
+        lastBY = rectB.centerY();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        //点A
+        paint.setColor(Color.RED);
+        paint2.setColor(Color.RED);
+        paint.setStrokeWidth(DP10 / 6);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawRect(rootRect, paint);
 
+        if (moveBtnType == 1) {
+            rectA.left = lastAX + disX - (BTN_SIZE / 2);
+            rectA.top = lastAY + disY - (BTN_SIZE / 2);
+            rectA.right = lastAX + disX + (BTN_SIZE / 2);
+            rectA.bottom = lastAY + disY + (BTN_SIZE / 2);
+        }
+        canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 2, paint);
+        canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 30, paint2);
+        //点B
+        paint.setColor(Color.BLUE);
+        paint2.setColor(Color.BLUE);
+
+        if (moveBtnType == 2) {
+            rectB.left = lastBX + disX - (BTN_SIZE / 2);
+            rectB.top = lastBY + disY - (BTN_SIZE / 2);
+            rectB.right = lastBX + disX + (BTN_SIZE / 2);
+            rectB.bottom = lastBY + disY + (BTN_SIZE / 2);
+        }
+        canvas.drawCircle(rectB.centerX(), rectB.centerY(), rectB.width() / 2, paint);
+        canvas.drawCircle(rectB.centerX(), rectB.centerY(), rectB.width() / 40, paint2);
+
+        paint.setStrokeWidth(DP10 / 4);
+        canvas.drawLine(rectA.centerX(), rectA.centerY(), rectB.centerX(), rectB.centerY(), paint);
+
+        paint.setStrokeWidth(DP10 / 20);
+        paint.setTextSize(DP10);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawText("距离：" + Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())))
+                , 0, DP10 * 2, paint);
+
+    }
+
+    float downX = 0, downY = 0;
+    float disX = 0, disY = 0;
+    /**
+     * 上一次移动到的中心点位置
+     */
+    float lastAX = 0, lastAY = 0;
+    float lastBX = 0, lastBY = 0;
+    /**
+     * 移动的按钮  1 点A  2点B
+     */
+    int moveBtnType = 0;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX(), y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN://0
+                downX = x;
+                downY = y;
+                if (rectA.contains(x, y)) {
+                    moveBtnType = 1;
+                } else if (rectB.contains(x, y)) {
+                    moveBtnType = 2;
+                } else {
+                    moveBtnType = 0;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE://2
+                disX = x - downX;
+                disY = y - downY;
+                if (moveBtnType == 1 || moveBtnType == 2)//只有出发了这两个状态绘制
+                    invalidate();
+                break;
+            case MotionEvent.ACTION_UP://1
+                lastAX = rectA.centerX();
+                lastAY = rectA.centerY();
+                lastBX = rectB.centerX();
+                lastBY = rectB.centerY();
+
+                disX = 0;
+                disY = 0;
+                break;
+
+        }
+        return true;
+    }
+
+    public double getDistance() {
+        return Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())));
     }
 }

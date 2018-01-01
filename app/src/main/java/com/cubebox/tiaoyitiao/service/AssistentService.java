@@ -21,17 +21,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cubebox.tiaoyitiao.AssistentView;
-import com.cubebox.tiaoyitiao.CloseActivity;
 import com.cubebox.tiaoyitiao.MyProcessAIDL;
-import com.cubebox.tiaoyitiao.OpenActivity;
 import com.cubebox.tiaoyitiao.R;
+import com.cubebox.tiaoyitiao.data.ConstantsPreference;
 import com.cubebox.tiaoyitiao.utils.BroadcastUtil;
 import com.cubebox.tiaoyitiao.utils.CycleUtile;
 import com.cubebox.tiaoyitiao.utils.DensityUtil;
+import com.cubebox.tiaoyitiao.utils.PreferencesManager;
 import com.cubebox.tiaoyitiao.utils.ScreenUtil;
-import com.cubebox.tiaoyitiao.utils.notification.NotificationUtils;
+import com.cubebox.tiaoyitiao.utils.TxtUtil;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
@@ -88,6 +89,7 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
 
         startKeepLiveService();
         startTaskService();
+        rate = TxtUtil.getFloat(PreferencesManager.getInstance(this).getString(ConstantsPreference.PRE_RATE, "1"));
 
         //  绑定远程服务
         bindService(new Intent(this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
@@ -113,17 +115,11 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
             switch (msg.what) {
                 case 1:
                     createToucher();
-                    Intent intent = new Intent(getApplicationContext(), CloseActivity.class);
-                    NotificationUtils.getInstance(getApplicationContext()).showIntentNotification(2, "跳一跳辅助", "点击打开辅助", "辅助", R.mipmap.ic_launcher, intent, null
-                            , true, -1);
                     break;
                 case 2:
                     if (windowManager != null && toucherLayout != null) {
                         windowManager.removeView(toucherLayout);
                     }
-                    Intent intent2 = new Intent(getApplicationContext(), OpenActivity.class);
-                    NotificationUtils.getInstance(getApplicationContext()).showIntentNotification(1, "跳一跳辅助", "点击关闭辅助", "辅助", R.mipmap.ic_launcher, intent2, null
-                            , true, -1);
                     break;
             }
         }
@@ -163,14 +159,37 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
 
         final AssistentView assistentView = (AssistentView) toucherLayout.findViewById(R.id.view_assistent);
         final Button jump = (Button) toucherLayout.findViewById(R.id.jump);
+        final Button add = (Button) toucherLayout.findViewById(R.id.add);
+        final Button reduce = (Button) toucherLayout.findViewById(R.id.reduce);
+        final TextView tvRate = (TextView) toucherLayout.findViewById(R.id.rate);
 
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execShellCmd("input swipe 400 600 500 800 2000");
+                execShellCmd("input swipe 400 600 500 800 " + (int) (rate * assistentView.getDistance()));
+            }
+        });
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate += 0.02f;
+                PreferencesManager.getInstance(getApplicationContext()).putString(PreferencesManager.PRE_RATE, rate + "");
+                tvRate.setText("敏感度：" + rate);
+            }
+        });
+
+        reduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate -= 0.02f;
+                PreferencesManager.getInstance(getApplicationContext()).putString(PreferencesManager.PRE_RATE, rate + "");
+                tvRate.setText("敏感度：" + rate);
             }
         });
     }
+
+    float rate = 1f;
 
     /**
      * 执行shell命令
