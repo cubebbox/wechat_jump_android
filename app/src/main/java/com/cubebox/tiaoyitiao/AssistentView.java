@@ -26,7 +26,7 @@ public class AssistentView extends View {
     private RectF rectB = new RectF();
     private int DP10 = 10;
 
-    private int BTN_SIZE = 90;
+    private int BTN_SIZE = 100;
 
     public AssistentView(Context context) {
         this(context, null);
@@ -100,7 +100,7 @@ public class AssistentView extends View {
             rectA.bottom = lastAY + disY + (BTN_SIZE / 2);
         }
         canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 2, paint);
-        canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 30, paint2);
+        canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 40, paint2);
         //点B
         paint.setColor(Color.BLUE);
         paint2.setColor(Color.BLUE);
@@ -150,7 +150,7 @@ public class AssistentView extends View {
                 } else if (rectB.contains(x, y)) {
                     moveBtnType = 2;
                 } else {
-                    moveBtnType = 0;
+                    moveBtnType = 1;
                 }
                 break;
             case MotionEvent.ACTION_MOVE://2

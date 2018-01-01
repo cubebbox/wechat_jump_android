@@ -1,19 +1,11 @@
 package com.cubebox.tiaoyitiao.service;
 
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,11 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cubebox.tiaoyitiao.AssistentView;
-import com.cubebox.tiaoyitiao.MyProcessAIDL;
 import com.cubebox.tiaoyitiao.R;
 import com.cubebox.tiaoyitiao.data.ConstantsPreference;
 import com.cubebox.tiaoyitiao.utils.BroadcastUtil;
-import com.cubebox.tiaoyitiao.utils.CycleUtile;
 import com.cubebox.tiaoyitiao.utils.DensityUtil;
 import com.cubebox.tiaoyitiao.utils.PreferencesManager;
 import com.cubebox.tiaoyitiao.utils.ScreenUtil;
@@ -36,21 +26,20 @@ import com.cubebox.tiaoyitiao.utils.TxtUtil;
 
 import java.io.DataOutputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 
 /**
  * Created by luozi on 2017/3/17.
  */
 
-public class AssistentService extends BaseService implements CycleUtile.onCycleListener {
+public class AssistentService extends BaseService {
     public static final String TAG = "AssistentService";
 
     private final static int GRAY_SERVICE_ID = -1001;
 
 
-    private localBinder mBinder;
-    private MyServiceConnection mMyServiceConnection;
+//    private localBinder mBinder;
+//    private MyServiceConnection mMyServiceConnection;
 
 
     //要引用的布局文件.
@@ -72,10 +61,10 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
         Log.e(TAG, TAG + " onCreate() executed");
         BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.OPEN, open);
         BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.CLOSE, close);
-        mBinder = new localBinder();
-        if (mMyServiceConnection == null) {
-            mMyServiceConnection = new MyServiceConnection();
-        }
+//        mBinder = new localBinder();
+//        if (mMyServiceConnection == null) {
+//            mMyServiceConnection = new MyServiceConnection();
+//        }
     }
 
     @Override
@@ -87,12 +76,12 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Log.e(TAG, TAG + " onStartCommand() executed");
 
-        startKeepLiveService();
-        startTaskService();
+//        startKeepLiveService();
+//        startTaskService();
         rate = TxtUtil.getFloat(PreferencesManager.getInstance(this).getString(ConstantsPreference.PRE_RATE, "1"));
 
         //  绑定远程服务
-        bindService(new Intent(this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
+//        bindService(new Intent(this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
         return START_STICKY;//当在内存不足时被回收后，有内存时又会被重新启动
     }
 
@@ -167,7 +156,7 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                execShellCmd("input swipe 400 600 500 800 " + (int) (rate * assistentView.getDistance()));
+                execShellCmd("input swipe 200 200 400 200 " + (int) (rate * assistentView.getDistance()));
             }
         });
 
@@ -215,82 +204,82 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
         }
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    //通过Aidl进行通讯
-    private class localBinder extends MyProcessAIDL.Stub {
-
-        @Override
-        public String getServiceName() throws RemoteException {
-            return TAG;
-        }
-    }
-
-    //连接远程服务
-    private class MyServiceConnection implements ServiceConnection {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            try {
-                // 与远程服务通信
-                MyProcessAIDL process = MyProcessAIDL.Stub.asInterface(service);
-                Log.e(TAG, "连接" + process.getServiceName() + "服务成功");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            // RemoteException连接过程出现的异常，才会回调,unbind不会回调
-            // 监测，远程服务已经死掉，则重启远程服务
-            Log.e(TAG, "远程服务挂掉了,远程服务被杀死");
-            // 启动远程服务
-            startService(new Intent(AssistentService.this, KeepLiveService.class));
-            // 绑定远程服务
-            bindService(new Intent(AssistentService.this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
-        }
-    }
-
-
-    @Override
-    public void onCycle() {
-        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.KeepLiveService");
-        if (!b) {
-            Intent service = new Intent(getApplicationContext(), KeepLiveService.class);
-            startService(service);
-        }
-
-    }
-
-    public static class GrayInnerService extends Service {
-
-        @Override
-        public void onCreate() {
-            super.onCreate();
-        }
-
-        @Override
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            startForeground(GRAY_SERVICE_ID, new Notification());
-            //stopForeground(true);
-            stopSelf();
-            return super.onStartCommand(intent, flags, startId);
-        }
-
-        @Override
-        public IBinder onBind(Intent intent) {
-            throw new UnsupportedOperationException("Not yet implemented");
-        }
-
-        @Override
-        public void onDestroy() {
-            super.onDestroy();
-        }
-    }
+//    @Override
+//    public IBinder onBind(Intent intent) {
+//        return mBinder;
+//    }
+//
+//    //通过Aidl进行通讯
+//    private class localBinder extends MyProcessAIDL.Stub {
+//
+//        @Override
+//        public String getServiceName() throws RemoteException {
+//            return TAG;
+//        }
+//    }
+//
+//    //连接远程服务
+//    private class MyServiceConnection implements ServiceConnection {
+//
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            try {
+//                // 与远程服务通信
+//                MyProcessAIDL process = MyProcessAIDL.Stub.asInterface(service);
+//                Log.e(TAG, "连接" + process.getServiceName() + "服务成功");
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            // RemoteException连接过程出现的异常，才会回调,unbind不会回调
+//            // 监测，远程服务已经死掉，则重启远程服务
+//            Log.e(TAG, "远程服务挂掉了,远程服务被杀死");
+//            // 启动远程服务
+//            startService(new Intent(AssistentService.this, KeepLiveService.class));
+//            // 绑定远程服务
+//            bindService(new Intent(AssistentService.this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
+//        }
+//    }
+//
+//
+//    @Override
+//    public void onCycle() {
+//        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.KeepLiveService");
+//        if (!b) {
+//            Intent service = new Intent(getApplicationContext(), KeepLiveService.class);
+//            startService(service);
+//        }
+//
+//    }
+//
+//    public static class GrayInnerService extends Service {
+//
+//        @Override
+//        public void onCreate() {
+//            super.onCreate();
+//        }
+//
+//        @Override
+//        public int onStartCommand(Intent intent, int flags, int startId) {
+//            startForeground(GRAY_SERVICE_ID, new Notification());
+//            //stopForeground(true);
+//            stopSelf();
+//            return super.onStartCommand(intent, flags, startId);
+//        }
+//
+//        @Override
+//        public IBinder onBind(Intent intent) {
+//            throw new UnsupportedOperationException("Not yet implemented");
+//        }
+//
+//        @Override
+//        public void onDestroy() {
+//            super.onDestroy();
+//        }
+//    }
 
 
     @Override
@@ -306,55 +295,55 @@ public class AssistentService extends BaseService implements CycleUtile.onCycleL
         this.startService(localIntent);
     }
 
-    /**
-     * 开启守护服务
-     */
-    private void startKeepLiveService() {
-        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.KeepLiveService");
-        if (!b) {
-            Intent service = new Intent(getApplicationContext(), KeepLiveService.class);
-            startService(service);
-        }
-    }
-
-    /**
-     * 开启任务服务
-     */
-    private void startTaskService() {
-        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.TaskService");
-        if (!b) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Intent service = new Intent(getApplicationContext(), TaskService.class);
-                startService(service);
-            }
-        }
-    }
-
-    /**
-     * 判断某个服务是否正在运行的方法
-     *
-     * @param context
-     * @param className 是包名+服务的类名（例如：net.loonggg.testbackstage.TestService）
-     * @return true代表正在运行，false代表服务没有正在运行
-     */
-    public static boolean isServiceExisted(Context context, String className) {
-        ActivityManager activityManager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> serviceList = activityManager
-                .getRunningServices(Integer.MAX_VALUE);
-
-        if (!(serviceList.size() > 0)) {
-            return false;
-        }
-
-        for (int i = 0; i < serviceList.size(); i++) {
-            ActivityManager.RunningServiceInfo serviceInfo = serviceList.get(i);
-            ComponentName serviceName = serviceInfo.service;
-
-            if (serviceName.getClassName().equals(className)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    /**
+//     * 开启守护服务
+//     */
+//    private void startKeepLiveService() {
+//        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.KeepLiveService");
+//        if (!b) {
+//            Intent service = new Intent(getApplicationContext(), KeepLiveService.class);
+//            startService(service);
+//        }
+//    }
+//
+//    /**
+//     * 开启任务服务
+//     */
+//    private void startTaskService() {
+//        boolean b = isServiceExisted(getApplicationContext(), "net.chofn.crm.service.TaskService");
+//        if (!b) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                Intent service = new Intent(getApplicationContext(), TaskService.class);
+//                startService(service);
+//            }
+//        }
+//    }
+//
+//    /**
+//     * 判断某个服务是否正在运行的方法
+//     *
+//     * @param context
+//     * @param className 是包名+服务的类名（例如：net.loonggg.testbackstage.TestService）
+//     * @return true代表正在运行，false代表服务没有正在运行
+//     */
+//    public static boolean isServiceExisted(Context context, String className) {
+//        ActivityManager activityManager = (ActivityManager) context
+//                .getSystemService(Context.ACTIVITY_SERVICE);
+//        List<ActivityManager.RunningServiceInfo> serviceList = activityManager
+//                .getRunningServices(Integer.MAX_VALUE);
+//
+//        if (!(serviceList.size() > 0)) {
+//            return false;
+//        }
+//
+//        for (int i = 0; i < serviceList.size(); i++) {
+//            ActivityManager.RunningServiceInfo serviceInfo = serviceList.get(i);
+//            ComponentName serviceName = serviceInfo.service;
+//
+//            if (serviceName.getClassName().equals(className)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }
