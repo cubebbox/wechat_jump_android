@@ -59,8 +59,6 @@ public class AssistentService extends BaseService {
         super.initData();
 
         Log.e(TAG, TAG + " onCreate() executed");
-        BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.OPEN, open);
-        BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.CLOSE, close);
 //        mBinder = new localBinder();
 //        if (mMyServiceConnection == null) {
 //            mMyServiceConnection = new MyServiceConnection();
@@ -79,7 +77,8 @@ public class AssistentService extends BaseService {
 //        startKeepLiveService();
 //        startTaskService();
         rate = TxtUtil.getFloat(PreferencesManager.getInstance(this).getString(ConstantsPreference.PRE_RATE, "1"));
-
+        BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.OPEN, open);
+        BroadcastUtil.getInstance().registerReceiver(this, BroadcastUtil.CLOSE, close);
         //  绑定远程服务
 //        bindService(new Intent(this, KeepLiveService.class), mMyServiceConnection, Context.BIND_IMPORTANT);
         return START_STICKY;//当在内存不足时被回收后，有内存时又会被重新启动

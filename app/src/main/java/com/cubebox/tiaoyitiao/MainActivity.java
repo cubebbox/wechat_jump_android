@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         Toast.makeText(this, "再通知栏打开与关闭辅助", Toast.LENGTH_LONG).show();
-        finish();
     }
 
     private void initListener() {
