@@ -183,49 +183,83 @@ public class AssistentView extends View {
         if (dis < cen) {//小于
             double tmp = cen - dis;
             int tmp2 = (int) (tmp / 25);
-            dis += (tmp * (tmp2 * 0.01 + 0.06));
-//            if (tmp >= 0 && tmp < 50) {
-//                dis += (tmp * 0.06f);
-//            } else if (tmp >= 50 && tmp < 100) {
-//                dis += (tmp * 0.08f);
-//            } else if (tmp >= 100 && tmp < 150) {
-//                dis += (tmp * 0.1f);
-//            } else if (tmp >= 150 && tmp < 200) {
-//                dis += (tmp * 0.12f);
-//            } else if (tmp >= 200 && tmp < 250) {
-//                dis += (tmp * 0.14f);
-//            } else if (tmp >= 250 && tmp < 300) {
-//                dis += (tmp * 0.15f);
-//            } else if (tmp >= 300 && tmp < 350) {
-//                dis += (tmp * 0.16f);
-//            } else if (tmp >= 350 && tmp < 400) {
-//                dis += (tmp * 0.17f);
-//            } else if (tmp >= 400 && tmp < 450) {
-//                dis += (tmp * 0.18f);
-//            } else if (tmp >= 450 && tmp < 500) {
-//                dis += (tmp * 0.19f);
-//            } else {
-//                dis += (tmp * 0.20f);
-//            }
+//            dis += (tmp * (tmp2 * 0.01 + 0.06) * (((1 - tmp) / cen)));
+            if (tmp >= 0 && tmp < 25) {
+                dis += (tmp * 0.06f);
+            } else if (tmp >= 25 && tmp < 50) {
+                dis += (tmp * 0.07f);
+            } else if (tmp >= 50 && tmp < 75) {
+                dis += (tmp * 0.08f);
+            } else if (tmp >= 75 && tmp < 100) {
+                dis += (tmp * 0.09f);
+            } else if (tmp >= 100 && tmp < 125) {
+                dis += (tmp * 0.10f);
+            } else if (tmp >= 125 && tmp < 150) {
+                dis += (tmp * 0.11f);
+            } else if (tmp >= 150 && tmp < 175) {
+                dis += (tmp * 0.12f);
+            } else if (tmp >= 175 && tmp < 200) {
+                dis += (tmp * 0.13f);
+            } else if (tmp >= 200 && tmp < 225) {
+                dis += (tmp * 0.14f);
+            } else if (tmp >= 225 && tmp < 250) {
+                dis += (tmp * 0.15f);
+            } else if (tmp >= 250 && tmp < 275) {
+                dis += (tmp * 0.155f);
+            } else if (tmp >= 275 && tmp < 300) {
+                dis += (tmp * 0.17);
+            } else if (tmp >= 300 && tmp < 325) {
+                dis += (tmp * 0.18f);
+            } else if (tmp >= 325 && tmp < 350) {
+                dis += (tmp * 0.185f);
+            } else if (tmp >= 350 && tmp < 375) {
+                dis += (tmp * 0.18f);
+            } else if (tmp >= 375 && tmp < 400) {
+                dis += (tmp * 0.175f);
+            } else if (tmp >= 400 && tmp < 425) {
+                dis += (tmp * 0.17f);
+            } else if (tmp >= 425 && tmp < 450) {
+                dis += (tmp * 0.15f);
+            } else if (tmp >= 450 && tmp < 475) {
+                dis += (tmp * 0.14f);
+            } else if (tmp >= 475 && tmp < 500) {
+                dis += (tmp * 0.13f);
+            }  else {
+                dis += (tmp * 0.12f);
+            }
         } else {//大于
             double tmp = dis - cen;
             int tmp2 = (int) (tmp / 25);
-            dis -= (tmp * (tmp2 * 0.03 + 0.05));
-//            if (tmp >= 0 && tmp < 50) {
-//                dis -= (tmp * 0.05f);
-//            } else if (tmp >= 50 && tmp < 100) {
-//                dis -= (tmp * 0.08f);
-//            } else if (tmp >= 100 && tmp < 150) {
-//                dis -= (tmp * 0.2f);
-//            } else if (tmp >= 150 && tmp < 200) {
-//                dis -= (tmp * 0.25f);
-//            } else if (tmp >= 200 && tmp < 250) {
-//                dis -= (tmp * 0.3f);
-//            } else if (tmp >= 250 && tmp < 300) {
-//                dis -= (tmp * 0.3f);
-//            } else {
-//                dis += (tmp * 0.35f);
-//            }
+//            dis -= (tmp * (tmp2 * 0.025 + 0.05));
+            if (tmp >= 0 && tmp < 25) {
+                dis -= (tmp * 0.055f);
+            } else if (tmp >= 25 && tmp < 50) {
+                dis -= (tmp * 0.06f);
+            } else if (tmp >= 50 && tmp < 75) {
+                dis -= (tmp * 0.07f);
+            } else if (tmp >= 75 && tmp < 100) {
+                dis -= (tmp * 0.08f);
+            } else if (tmp >= 100 && tmp < 125) {
+                dis -= (tmp * 0.09f);
+            } else if (tmp >= 125 && tmp < 150) {
+                dis -= (tmp * 0.10f);
+            } else if (tmp >= 150 && tmp < 175) {
+                dis -= (tmp * 0.11f);
+            } else if (tmp >= 175 && tmp < 200) {
+                dis -= (tmp * 0.12f);
+            } else if (tmp >= 200 && tmp < 225) {
+                dis -= (tmp * 0.13f);
+            } else if (tmp >= 225 && tmp < 250) {
+                dis -= (tmp * 0.14f);
+            } else if (tmp >= 250 && tmp < 275) {
+                dis -= (tmp * 0.15f);
+            } else if (tmp >= 275 && tmp < 300) {
+                dis -= (tmp * 0.16f);
+            } else if (tmp >= 300 && tmp < 325) {
+                dis -= (tmp * 0.17f);
+            }else {
+                dis -= (tmp * 0.19f);
+            }
         }
         return dis;
     }

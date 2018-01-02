@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 NotificationUtils.getInstance(MainActivity.this).showDefaultNotification(null, 1, "跳一跳辅助", "点击打开辅助", "辅助", -1, 1000, false, true
                         , 0, R.mipmap.ic_launcher, intent, null, true, -1);
 
+                BroadcastUtil.getInstance().sendEmptyBoradcast(MainActivity.this, BroadcastUtil.OPEN);
 
                 Toast.makeText(MainActivity.this, "再通知栏打开与关闭辅助", Toast.LENGTH_LONG).show();
                 finish();
