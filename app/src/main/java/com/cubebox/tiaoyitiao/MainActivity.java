@@ -25,22 +25,22 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         startService(new Intent(this, AssistentService.class));
 
-        Intent intent = new Intent(MainActivity.this, OpenActivity.class);
-        Intent intent2 = new Intent(MainActivity.this, CloseActivity.class);
-        NotificationUtils.getInstance(MainActivity.this).showDefaultNotification(null, 2, "跳一跳辅助", "点击关闭辅助", "辅助", -1, 1000, false, true
-                , 0, R.mipmap.ic_launcher, intent2, null, true, -1);
-        NotificationUtils.getInstance(MainActivity.this).showDefaultNotification(null, 1, "跳一跳辅助", "点击打开辅助", "辅助", -1, 1000, false, true
-                , 0, R.mipmap.ic_launcher, intent, null, true, -1);
-
-
-        Toast.makeText(this, "再通知栏打开与关闭辅助", Toast.LENGTH_LONG).show();
     }
 
     private void initListener() {
         findViewById(R.id.open).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, OpenActivity.class);
+                Intent intent2 = new Intent(MainActivity.this, CloseActivity.class);
+                NotificationUtils.getInstance(MainActivity.this).showDefaultNotification(null, 2, "跳一跳辅助", "点击关闭辅助", "辅助", -1, 1000, false, true
+                        , 0, R.mipmap.ic_launcher, intent2, null, true, -1);
+                NotificationUtils.getInstance(MainActivity.this).showDefaultNotification(null, 1, "跳一跳辅助", "点击打开辅助", "辅助", -1, 1000, false, true
+                        , 0, R.mipmap.ic_launcher, intent, null, true, -1);
 
+
+                Toast.makeText(MainActivity.this, "再通知栏打开与关闭辅助", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {

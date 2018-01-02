@@ -101,6 +101,8 @@ public class AssistentView extends View {
         }
         canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 2, paint);
         canvas.drawCircle(rectA.centerX(), rectA.centerY(), rectA.width() / 40, paint2);
+        canvas.drawLine(rectA.centerX(), rectA.top, rectA.centerX(), rectA.bottom, paint);
+        canvas.drawLine(rectA.left, rectA.centerY(), rectA.right, rectA.centerY(), paint);
         //点B
         paint.setColor(Color.BLUE);
         paint2.setColor(Color.BLUE);
@@ -113,6 +115,8 @@ public class AssistentView extends View {
         }
         canvas.drawCircle(rectB.centerX(), rectB.centerY(), rectB.width() / 2, paint);
         canvas.drawCircle(rectB.centerX(), rectB.centerY(), rectB.width() / 40, paint2);
+        canvas.drawLine(rectB.centerX(), rectB.top, rectB.centerX(), rectB.bottom, paint);
+        canvas.drawLine(rectB.left, rectB.centerY(), rectB.right, rectB.centerY(), paint);
 
         paint.setStrokeWidth(DP10 / 4);
         canvas.drawLine(rectA.centerX(), rectA.centerY(), rectB.centerX(), rectB.centerY(), paint);
@@ -174,6 +178,74 @@ public class AssistentView extends View {
     }
 
     public double getDistance() {
-        return Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())));
+        double dis = Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())));
+        double cen = 730f;
+        if (dis < cen) {//小于
+            double tmp = cen - dis;
+            int tmp2 = (int) (tmp / 25);
+            dis += (tmp * (tmp2 * 0.01 + 0.06));
+//            if (tmp >= 0 && tmp < 50) {
+//                dis += (tmp * 0.06f);
+//            } else if (tmp >= 50 && tmp < 100) {
+//                dis += (tmp * 0.08f);
+//            } else if (tmp >= 100 && tmp < 150) {
+//                dis += (tmp * 0.1f);
+//            } else if (tmp >= 150 && tmp < 200) {
+//                dis += (tmp * 0.12f);
+//            } else if (tmp >= 200 && tmp < 250) {
+//                dis += (tmp * 0.14f);
+//            } else if (tmp >= 250 && tmp < 300) {
+//                dis += (tmp * 0.15f);
+//            } else if (tmp >= 300 && tmp < 350) {
+//                dis += (tmp * 0.16f);
+//            } else if (tmp >= 350 && tmp < 400) {
+//                dis += (tmp * 0.17f);
+//            } else if (tmp >= 400 && tmp < 450) {
+//                dis += (tmp * 0.18f);
+//            } else if (tmp >= 450 && tmp < 500) {
+//                dis += (tmp * 0.19f);
+//            } else {
+//                dis += (tmp * 0.20f);
+//            }
+        } else {//大于
+            double tmp = dis - cen;
+            int tmp2 = (int) (tmp / 25);
+            dis -= (tmp * (tmp2 * 0.03 + 0.05));
+//            if (tmp >= 0 && tmp < 50) {
+//                dis -= (tmp * 0.05f);
+//            } else if (tmp >= 50 && tmp < 100) {
+//                dis -= (tmp * 0.08f);
+//            } else if (tmp >= 100 && tmp < 150) {
+//                dis -= (tmp * 0.2f);
+//            } else if (tmp >= 150 && tmp < 200) {
+//                dis -= (tmp * 0.25f);
+//            } else if (tmp >= 200 && tmp < 250) {
+//                dis -= (tmp * 0.3f);
+//            } else if (tmp >= 250 && tmp < 300) {
+//                dis -= (tmp * 0.3f);
+//            } else {
+//                dis += (tmp * 0.35f);
+//            }
+        }
+        return dis;
+    }
+
+    /**
+     * 微调距离
+     *
+     * @param type     1.红色 2.蓝色
+     * @param moveType 1.左右 2.上下
+     */
+    public void tinyMove(int type, int moveType, float value) {
+        moveBtnType = type;
+        switch (moveType) {
+            case 1:
+                disX += value;
+                break;
+            case 2:
+                disY += value;
+                break;
+        }
+        invalidate();
     }
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.cubebox.tiaoyitiao.AssistentView;
@@ -150,8 +151,16 @@ public class AssistentService extends BaseService {
         final Button add = (Button) toucherLayout.findViewById(R.id.add);
         final Button reduce = (Button) toucherLayout.findViewById(R.id.reduce);
         final TextView tvRate = (TextView) toucherLayout.findViewById(R.id.rate);
+        final RadioButton red = (RadioButton) toucherLayout.findViewById(R.id.red);
+        final RadioButton blue = (RadioButton) toucherLayout.findViewById(R.id.blue);
+        final Button left = (Button) toucherLayout.findViewById(R.id.left);
+        final Button top = (Button) toucherLayout.findViewById(R.id.top);
+        final Button bottom = (Button) toucherLayout.findViewById(R.id.bottom);
+        final Button right = (Button) toucherLayout.findViewById(R.id.right);
 
         tvRate.setText("敏感度：" + rate);
+        red.setChecked(true);
+
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +185,47 @@ public class AssistentService extends BaseService {
                 tvRate.setText("敏感度：" + rate);
             }
         });
+        red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectBtn = 1;
+            }
+        });
+        blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectBtn = 2;
+            }
+        });
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistentView.tinyMove(selectBtn, 1, -1f);
+            }
+        });
+        top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistentView.tinyMove(selectBtn, 2, -1f);
+            }
+        });
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistentView.tinyMove(selectBtn, 1, 1f);
+            }
+        });
+        bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                assistentView.tinyMove(selectBtn, 2, 1f);
+            }
+        });
+
     }
 
+
+    int selectBtn = 1;//1红色按钮 2.蓝色按钮
     float rate = 1f;
 
     /**

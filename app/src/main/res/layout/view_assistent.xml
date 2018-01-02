@@ -21,37 +21,109 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/jump"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="自动跳"
-            android:textColor="@color/white" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/jump"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="自动跳"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="敏感度:"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/add"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:text="+"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/reduce"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/red"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="红色" />
+
+            <RadioButton
+                android:id="@+id/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="蓝色" />
+        </RadioGroup>
 
         <Button
-            android:id="@+id/add"
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="左"
+            android:textColor="@color/white" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="敏感度+"
-            android:textColor="@color/white" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="上"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="下"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/reduce"
+            android:id="@+id/right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="敏感度-"
+            android:text="右"
             android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="敏感度:"
-            android:textColor="@color/black" />
     </LinearLayout>
 
 </LinearLayout>
