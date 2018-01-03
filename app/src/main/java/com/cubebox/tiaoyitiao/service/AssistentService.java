@@ -157,6 +157,8 @@ public class AssistentService extends BaseService {
         final Button top = (Button) toucherLayout.findViewById(R.id.top);
         final Button bottom = (Button) toucherLayout.findViewById(R.id.bottom);
         final Button right = (Button) toucherLayout.findViewById(R.id.right);
+        final Button small = (Button) toucherLayout.findViewById(R.id.small);
+        final LinearLayout layout = (LinearLayout) toucherLayout.findViewById(R.id.layout);
 
         tvRate.setText("敏感度：" + rate);
         red.setChecked(true);
@@ -219,6 +221,19 @@ public class AssistentService extends BaseService {
             @Override
             public void onClick(View v) {
                 assistentView.tinyMove(selectBtn, 2, 1f);
+            }
+        });
+        small.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (layout.getVisibility() == View.VISIBLE) {
+                    layout.setVisibility(View.GONE);
+                    small.setText("展开");
+                } else {
+                    layout.setVisibility(View.VISIBLE);
+                    small.setText("缩小");
+                }
+
             }
         });
 
