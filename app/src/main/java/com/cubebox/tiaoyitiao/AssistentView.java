@@ -235,7 +235,7 @@ public class AssistentView extends View {
         } else {//大于
             double tmp = dis - cen;
             int tmp2 = (int) (tmp / 25);
-            dis -= (tmp * (tmp2 * 0.025 + 0.05));
+//            dis -= (tmp * (tmp2 * 0.025 + 0.05));
             if (tmp >= 0 && tmp < 25) {
                 dis -= (tmp * 0.05f);
             } else if (tmp >= 25 && tmp < 50) {
