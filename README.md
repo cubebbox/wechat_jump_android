@@ -2,8 +2,8 @@
 
 ### Example
 
-![IMG a](https://github.com/cubebbox/wechat_jump_android/b.png)
-![GIF a](https://github.com/cubebbox/wechat_jump_android/a.gif)
+![IMG a](https://github.com/cubebbox/wechat_jump_android/blob/master/b.png)
+![GIF a](https://github.com/cubebbox/wechat_jump_android/blob/master/a.gif)
 
 辅助跳跃，根据不同的机型可以调节不同的敏感度，如果有差别比较大的同学可以直接改源码，因为懒并没有做适配那些，所以需要小伙伴自己到应用设置界面
 赋予权限（悬浮窗等）,而且由于需要模拟点击所以需要root权限，手机必须root才能使用
