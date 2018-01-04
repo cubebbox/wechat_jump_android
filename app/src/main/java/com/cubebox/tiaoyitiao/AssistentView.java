@@ -153,8 +153,6 @@ public class AssistentView extends View {
                     moveBtnType = 1;
                 } else if (rectB.contains(x, y)) {
                     moveBtnType = 2;
-                } else {
-                    moveBtnType = 1;
                 }
                 break;
             case MotionEvent.ACTION_MOVE://2
@@ -177,6 +175,13 @@ public class AssistentView extends View {
         return true;
     }
 
+    /**
+     * 1.红2.蓝
+     */
+    public void setMoveBtnType(int moveBtnType) {
+        this.moveBtnType = moveBtnType;
+    }
+
     public double getDistance() {
         double dis = Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())));
         double cen = 730f;
@@ -184,7 +189,6 @@ public class AssistentView extends View {
             double tmp = cen - dis;
             int tmp2 = (int) (tmp / 25);
 //                dis += (tmp * (tmp2 * 0.01 + 0.06) * (((1 - tmp) / cen)));
-
             if (tmp >= 0 && tmp < 25) {
                 dis += (tmp * 0.06f);
             } else if (tmp >= 25 && tmp < 50) {

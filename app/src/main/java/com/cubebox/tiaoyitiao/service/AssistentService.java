@@ -211,6 +211,7 @@ public class AssistentService extends BaseService {
 
         tvRate.setText("敏感度：" + rate);
         red.setChecked(true);
+        assistentView.setMoveBtnType(selectBtn);
 
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,12 +256,14 @@ public class AssistentService extends BaseService {
             @Override
             public void onClick(View v) {
                 selectBtn = 1;
+                assistentView.setMoveBtnType(selectBtn);
             }
         });
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectBtn = 2;
+                assistentView.setMoveBtnType(selectBtn);
             }
         });
         left.setOnClickListener(new View.OnClickListener() {
