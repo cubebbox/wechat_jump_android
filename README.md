@@ -14,8 +14,7 @@
 计算方法是：屏幕显示距离-730 = 结果（如果是负数修改对应小于范围的区间值（远了减小值，近了增大值），反之则取大于区间内的值（远了增大值近了减小值））
 
 本来想做成自动调节的，但是太懒了不想做了，就直接开源了，需要的自己改吧
-Declare an StickyView inside your XML layout file. You also need to other layouts for contentLayout and floatLayout:
-
+```groovy
   public double getDistance() {
          double dis = Math.sqrt(((rectA.centerX() - rectB.centerX()) * (rectA.centerX() - rectB.centerX())) + ((rectA.centerY() - rectB.centerY()) * (rectA.centerY() - rectB.centerY())));
          double cen = 730f;
@@ -102,7 +101,7 @@ Declare an StickyView inside your XML layout file. You also need to other layout
          }
          return dis;
      }
-
+```
 
 
 
